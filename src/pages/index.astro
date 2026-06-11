@@ -1,17 +1,30 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
 
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const latestPosts = posts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="wblog" description="A personal blog">
+  <section class="mb-12">
+    <h1 class="text-4xl font-bold tracking-tight">Welcome to wblog</h1>
+    <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+      Thoughts on code, design, and everything in between.
+    </p>
+  </section>
+
+  <section>
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-2xl font-semibold">Latest Posts</h2>
+      <a href="/blog" class="text-blue-600 dark:text-blue-400 hover:underline">View all &rarr;</a>
+    </div>
+    <div class="space-y-6">
+      {latestPosts.length === 0 && <p class="text-gray-500 dark:text-gray-400">No posts yet. Check back soon!</p>}
+      {latestPosts.map(post => <BlogCard post={post} />)}
+    </div>
+  </section>
+</BaseLayout>

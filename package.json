@@ -1,5 +1,5 @@
 {
-  "name": "strong-series",
+  "name": "wblog",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -7,11 +7,18 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:cms": "concurrently \"astro dev\" \"npx decap-server\"",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.4.6"
+    "@astrojs/rss": "^4.0.18",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.4.6",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
   }
 }
