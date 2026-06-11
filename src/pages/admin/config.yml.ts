@@ -1,11 +1,10 @@
-backend:
-  name: github
-  repo: sierraleonez/sierraleonez.github.io
-  branch: main
-  base_url: https://sierraleonez.github.io
-  auth_endpoint: api/auth
+import type { APIRoute } from 'astro';
 
-local_backend: true
+export const GET: APIRoute = () => {
+  const config = `backend:
+  name: proxy
+  proxy_url: http://localhost:8081/api/v1
+  branch: main
 
 media_folder: public/uploads
 public_folder: /uploads
@@ -25,3 +24,8 @@ collections:
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Draft", name: "draft", widget: "boolean", default: false }
       - { label: "Body", name: "body", widget: "markdown" }
+`;
+  return new Response(config, {
+    headers: { 'Content-Type': 'text/yaml; charset=utf-8' }
+  });
+};
