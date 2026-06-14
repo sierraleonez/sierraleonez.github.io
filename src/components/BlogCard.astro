@@ -6,10 +6,12 @@ export interface Props {
 }
 
 const { post } = Astro.props;
-const { title, date, description, tags, category } = post.data;
+const { title, date, description, tags, category, image } = post.data;
 ---
 
-<article class="border border-gray-200 dark:border-gray-800 rounded-lg p-6 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
+<article class="border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
+  {image && <a href={`/blog/${post.id}`}><img src={image} alt={title} class="w-full rounded-t-lg" /></a>}
+  <div class="p-6">
   <a href={`/blog/${post.id}`} class="group">
     <time class="text-sm text-gray-500 dark:text-gray-400" datetime={date.toISOString()}>
       {date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -28,5 +30,6 @@ const { title, date, description, tags, category } = post.data;
         #{tag}
       </a>
     ))}
+  </div>
   </div>
 </article>

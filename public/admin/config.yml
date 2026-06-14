@@ -1,13 +1,12 @@
-import type { APIRoute } from 'astro';
-
-export const GET: APIRoute = () => {
-  const config = `backend:
+backend:
   name: proxy
   proxy_url: http://localhost:8081/api/v1
   branch: main
 
 media_folder: public/uploads
 public_folder: /uploads
+media_library:
+  name: default
 
 collections:
   - name: blog
@@ -24,8 +23,3 @@ collections:
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Draft", name: "draft", widget: "boolean", default: false }
       - { label: "Body", name: "body", widget: "markdown" }
-`;
-  return new Response(config, {
-    headers: { 'Content-Type': 'text/yaml; charset=utf-8' }
-  });
-};
