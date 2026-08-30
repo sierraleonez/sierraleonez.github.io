@@ -1,0 +1,42 @@
+{
+  "packs": [
+    {
+      "name": "Umum",
+      "pairs": [
+        { "civilian": "Kopi", "undercover": "Teh" },
+        { "civilian": "Kucing", "undercover": "Anjing" },
+        { "civilian": "Pizza", "undercover": "Burger" },
+        { "civilian": "Pantai", "undercover": "Kolam Renang" },
+        { "civilian": "Sepeda", "undercover": "Motor" },
+        { "civilian": "Dokter", "undercover": "Perawat" },
+        { "civilian": "Hujan", "undercover": "Salju" },
+        { "civilian": "Gitar", "undercover": "Piano" },
+        { "civilian": "Bakso", "undercover": "Soto" },
+        { "civilian": "Sekolah", "undercover": "Kampus" },
+        { "civilian": "Bantal", "undercover": "Guling" },
+        { "civilian": "Sendok", "undercover": "Garpu" }
+      ]
+    },
+    {
+      "name": "Teknologi",
+      "pairs": [
+        { "civilian": "Laptop", "undercover": "Tablet" },
+        { "civilian": "WhatsApp", "undercover": "Telegram" },
+        { "civilian": "Youtube", "undercover": "TikTok" },
+        { "civilian": "Google", "undercover": "Bing" },
+        { "civilian": "Keyboard", "undercover": "Mouse" },
+        { "civilian": "Wifi", "undercover": "Bluetooth" }
+      ]
+    },
+    {
+      "name": "Film & Game",
+      "pairs": [
+        { "civilian": "Spiderman", "undercover": "Batman" },
+        { "civilian": "Naruto", "undercover": "One Piece" },
+        { "civilian": "Mobile Legends", "undercover": "PUBG" },
+        { "civilian": "Minecraft", "undercover": "Roblox" },
+        { "civilian": "Netflix", "undercover": "Bioskop" }
+      ]
+    }
+  ]
+}
