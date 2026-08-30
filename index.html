@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Undercover — Party Word Game</title>
+<meta name="description" content="Undercover word game. Pass and play, kata rahasia bisa dikustom lewat words.json." />
+<meta name="theme-color" content="#0f1020" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕵️</text></svg>" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- SETUP -->
+  <section class="screen active" id="screen-setup">
+    <header class="hero">
+      <h1>🕵️ Undercover</h1>
+      <p class="muted">Cari siapa yang bukan bagian dari kita.</p>
+    </header>
+
+    <div class="card">
+      <h2>Pemain</h2>
+      <div class="row">
+        <button class="btn-round" id="playersMinus" type="button">−</button>
+        <div class="counter"><span id="playerCount">4</span> <small>pemain</small></div>
+        <button class="btn-round" id="playersPlus" type="button">+</button>
+      </div>
+      <div id="nameList" class="names"></div>
+    </div>
+
+    <div class="card">
+      <h2>Komposisi Peran</h2>
+      <div class="stepper">
+        <span>Undercover</span>
+        <div class="row compact">
+          <button class="btn-round sm" data-role="undercover" data-delta="-1" type="button">−</button>
+          <b id="undercoverCount">1</b>
+          <button class="btn-round sm" data-role="undercover" data-delta="1" type="button">+</button>
+        </div>
+      </div>
+      <div class="stepper">
+        <span>Mr. White</span>
+        <div class="row compact">
+          <button class="btn-round sm" data-role="mrwhite" data-delta="-1" type="button">−</button>
+          <b id="mrwhiteCount">0</b>
+          <button class="btn-round sm" data-role="mrwhite" data-delta="1" type="button">+</button>
+        </div>
+      </div>
+      <p class="muted small" id="compositionHint"></p>
+    </div>
+
+    <div class="card">
+      <h2>Kata Rahasia</h2>
+      <label class="field">
+        <span>Pack</span>
+        <select id="packSelect"></select>
+      </label>
+      <p class="muted small" id="packInfo">Memuat words.json…</p>
+      <details class="custom">
+        <summary>Tambah kata sendiri</summary>
+        <div class="custom-body">
+          <div class="row gap">
+            <input id="customCivilian" type="text" placeholder="Kata warga" />
+            <input id="customUndercover" type="text" placeholder="Kata undercover" />
+          </div>
+          <button class="btn ghost" id="addCustom" type="button">Tambahkan</button>
+          <ul id="customList" class="chips"></ul>
+          <p class="muted small">Kata custom tersimpan di browser ini. Untuk permanen, edit <code>words.json</code> di repo.</p>
+        </div>
+      </details>
+    </div>
+
+    <button class="btn primary big" id="startBtn" type="button">Mulai Main</button>
+    <p class="err" id="setupError"></p>
+  </section>
+
+  <!-- REVEAL -->
+  <section class="screen" id="screen-reveal">
+    <div class="pill" id="revealProgress"></div>
+    <div class="card tall">
+      <h2 id="revealName">Pemain</h2>
+      <p class="muted" id="revealHint">Pastikan hanya kamu yang melihat layar.</p>
+      <button class="secret" id="secretCard" type="button">
+        <span id="secretText">Tap untuk lihat kata</span>
+      </button>
+      <button class="btn primary" id="revealNext" type="button" hidden>Sudah, lanjut</button>
+    </div>
+  </section>
+
+  <!-- ROUND -->
+  <section class="screen" id="screen-round">
+    <div class="pill" id="roundPill">Ronde 1</div>
+    <div class="card">
+      <h2>Urutan Bicara</h2>
+      <p class="muted">Sebutkan satu kata petunjuk, jangan sampai ketahuan.</p>
+      <ol class="order" id="speakOrder"></ol>
+    </div>
+    <div class="card">
+      <h2>Masih Hidup</h2>
+      <div class="alive" id="aliveList"></div>
+    </div>
+    <button class="btn primary big" id="toVote" type="button">Lanjut Voting</button>
+  </section>
+
+  <!-- VOTE -->
+  <section class="screen" id="screen-vote">
+    <div class="pill">Voting</div>
+    <div class="card">
+      <h2>Siapa yang dieliminasi?</h2>
+      <div class="vote-grid" id="voteGrid"></div>
+    </div>
+    <button class="btn ghost" id="backToRound" type="button">Kembali</button>
+  </section>
+
+  <!-- ELIMINATION RESULT -->
+  <section class="screen" id="screen-result">
+    <div class="card tall center">
+      <div class="avatar big" id="resultAvatar">?</div>
+      <h2 id="resultName"></h2>
+      <p class="role-tag" id="resultRole"></p>
+      <p class="muted" id="resultNote"></p>
+      <button class="btn primary" id="resultNext" type="button">Lanjut</button>
+    </div>
+  </section>
+
+  <!-- MR WHITE GUESS -->
+  <section class="screen" id="screen-guess">
+    <div class="card tall center">
+      <h2>Mr. White tertangkap!</h2>
+      <p class="muted" id="guessWho"></p>
+      <p>Tebak kata warga untuk mencuri kemenangan.</p>
+      <input id="guessInput" type="text" placeholder="Tulis tebakanmu" autocomplete="off" />
+      <button class="btn primary" id="guessSubmit" type="button">Tebak</button>
+    </div>
+  </section>
+
+  <!-- GAME OVER -->
+  <section class="screen" id="screen-over">
+    <div class="card tall center">
+      <h1 id="overTitle"></h1>
+      <p class="muted" id="overReason"></p>
+      <div class="words">
+        <div><small>Kata Warga</small><b id="overCivilian"></b></div>
+        <div><small>Kata Undercover</small><b id="overUndercover"></b></div>
+      </div>
+      <div class="alive final" id="overRoster"></div>
+      <button class="btn primary" id="playAgain" type="button">Main Lagi</button>
+      <button class="btn ghost" id="backSetup" type="button">Ubah Pengaturan</button>
+    </div>
+  </section>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>

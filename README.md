@@ -1,43 +1,50 @@
-# Astro Starter Kit: Minimal
+# 🕵️ Undercover
 
-```sh
-npm create astro@latest -- --template minimal
+Clone game party **Undercover** — pure vanilla HTML/CSS/JS, tanpa build step.
+Pass & play di satu HP.
+
+## Cara main
+
+1. Atur jumlah pemain, nama, jumlah **Undercover** dan **Mr. White**.
+2. Setiap pemain tap kartu untuk lihat kata rahasianya (Mr. White tidak dapat kata).
+3. Bergiliran menyebut satu petunjuk tentang kata masing-masing.
+4. Voting untuk mengeliminasi satu pemain, peran langsung terbuka.
+5. Kalau Mr. White tereliminasi, dia dapat satu kesempatan menebak kata warga.
+
+**Kondisi menang**
+- Warga menang kalau semua undercover & Mr. White tersingkir.
+- Undercover menang kalau jumlah penyusup ≥ jumlah warga yang tersisa.
+- Mr. White menang instan kalau tebakannya benar.
+
+## Kustomisasi kata
+
+Semua kata rahasia dibaca dari [`words.json`](words.json):
+
+```json
+{
+  "packs": [
+    {
+      "name": "Umum",
+      "pairs": [
+        { "civilian": "Kopi", "undercover": "Teh" }
+      ]
+    }
+  ]
+}
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- `civilian` = kata untuk warga, `undercover` = kata untuk undercover.
+- Tambah pack baru cukup dengan menambah objek di array `packs`.
+- Bentuk singkat juga didukung: file berisi array `[{ "civilian": "...", "undercover": "..." }]`.
+- Di dalam game ada juga menu **Tambah kata sendiri** (tersimpan di `localStorage` browser, tidak ikut ke repo).
 
-## 🚀 Project Structure
+## Menjalankan lokal
 
-Inside of your Astro project, you'll see the following folders and files:
+Butuh HTTP server karena `words.json` dimuat via `fetch`:
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+python3 -m http.server 8000
+# buka http://localhost:8000
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Deploy otomatis ke GitHub Pages lewat `.github/workflows/deploy.yml` setiap push ke `main`.
